@@ -28,7 +28,7 @@ torch.manual_seed(RANDOM_SEED)
 class MyDataset(Dataset):
     def __init__(self, x, y, augment_negatives=False):
         self.x = torch.tensor(x, dtype=torch.float32)
-        self.y = torch.tensor(y, dtype=torch.long)
+        self.y = torch.tensor(np.array(y), dtype=torch.long)
 
         self.augment_negatives = augment_negatives
 
@@ -290,13 +290,17 @@ def predict(x_test):
     model = CNN()
     model.load_state_dict(state_dict)
     model.eval()
-    y_probs = model(torch.tensor(x_test).permute(0, 3, 1, 2).astype(np.float32))[:, 1]
+    model = model.to(device)
+    inputs = x_test.to(device)
+    y_probs = model(torch.tensor(inputs, dtype=torch.float32).permute(0, 3, 1, 2))[:, 1]
     np.savetxt('yproba_cnn.txt', y_probs.detach().numpy())
 
 
 def main():
     x_dev, y_dev, x_test = load_data()
     x_train, x_val, y_train, y_val = sklearn.model_selection.train_test_split(x_dev, y_dev, test_size=0.20, random_state=RANDOM_SEED)
+    y_train = y_train.to_numpy()
+    y_val = y_val.to_numpy()
     model = CNN()
     history = train(x_train,
                     y_train,
