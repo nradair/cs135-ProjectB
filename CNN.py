@@ -1,17 +1,17 @@
 import os
 import numpy as np
 import pandas as pd
+import random
 
 import sklearn.metrics
 import sklearn.model_selection
-from sklearn.preprocessing import StandardScaler
 
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 import torch.nn.functional as F
+import torchvision.transforms as T
 
-from tqdm import tqdm
 from matplotlib import pyplot as plt
 import seaborn as sns
 
@@ -25,48 +25,87 @@ plt.rcParams['image.cmap'] = 'gray'
 RANDOM_SEED = 42
 torch.manual_seed(RANDOM_SEED)
 
-
 class MyDataset(Dataset):
-    def __init__(self, x, y):
-        self.x = torch.tensor(x, dtype = torch.float32)
-        self.y = torch.tensor(y, dtype = torch.long)
+    def __init__(self, x, y, augment_negatives=False):
+        self.x = torch.tensor(x, dtype=torch.float32)
+        self.y = torch.tensor(y, dtype=torch.long)
+
+        self.augment_negatives = augment_negatives
+
+        # Base transform (always applied)
+        self.base_transform = T.Compose([
+            T.Lambda(lambda img: img.permute(2, 0, 1)),  # HWC -> CHW
+        ])
+
+        # Augmentation for negative class (label == 0)
+        self.neg_transform = T.Compose([
+            T.Lambda(lambda img: img.permute(2, 0, 1)),
+            T.RandomRotation(degrees=90),
+        ])
+
     def __len__(self):
-        return self.x.size()[0]
-    
+        return len(self.x)
+
     def __getitem__(self, idx):
-        return self.x[idx], self.y[idx]
+        img = self.x[idx]
+        label = self.y[idx]
+
+        if self.augment_negatives and label == 0:
+            img = self.neg_transform(img)
+        else:
+            img = self.base_transform(img)
+
+        return img, label
+    
+
+def create_balanced_sampler(labels):
+    labels = torch.tensor(labels)
+
+    class_counts = torch.bincount(labels)
+    class_weights = 1.0 / class_counts.float()
+
+    sample_weights = class_weights[labels]
+
+    sampler = WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(labels),
+        replacement=True
+    )
+
+    return sampler
+
 
 class CNN(nn.Module):
     def __init__(self):
         super().__init__()
         self.seq = nn.Sequential(
+            nn.LazyConv2d(16, 3, padding='same'),
+            nn.LazyBatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
             nn.LazyConv2d(32, 3, padding='same'),
-            nn.LazyBatchNorm1d(),
+            nn.LazyBatchNorm2d(),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
             nn.LazyConv2d(64, 3, padding='same'),
-            nn.LazyBatchNorm1d(),
+            nn.LazyBatchNorm2d(),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
             nn.LazyConv2d(128, 3, padding='same'),
-            nn.LazyBatchNorm1d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(256, 3, padding='same'),
-            nn.LazyBatchNorm1d(),
+            nn.LazyBatchNorm2d(),
             nn.ReLU(),
             nn.AdaptiveAvgPool2d(1),
 
             nn.Flatten(),
-            nn.LazyLinear(out_features=64),
+            nn.LazyLinear(64),
             nn.ReLU(),
-            nn.LazyLinear(out_features=2)
+            nn.Dropout(0.2),
+            nn.LazyLinear(2)
         )
 
     def forward(self, x):
         logits = self.seq(x)
-        probs = F.softmax(logits, dim=1)
-        return probs
+        return logits
 
 
 def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, lr, weight_decay):
@@ -90,8 +129,16 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
 
     model = model.to(device)
 
-    trainloader = DataLoader(MyDataset(x_train, y_train), batch_size=batch_size, shuffle=True)
-    validationloader = DataLoader(MyDataset(x_val, y_val), batch_size=y_val.shape[0], shuffle=False)
+    sampler = create_balanced_sampler(y_train)
+
+    trainloader = DataLoader(MyDataset(x_train, y_train, augment_negatives=True),
+                             batch_size=batch_size,
+                             shuffle=False,
+                             sampler=sampler)
+    
+    validationloader = DataLoader(MyDataset(x_val, y_val, augment_negatives=False),
+                                  batch_size=y_val.shape[0],
+                                  shuffle=False)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     
@@ -106,6 +153,10 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
     best_accuracy = 0
     best_auc = 0
 
+    # patience variables
+    improved = False
+    patience = 0
+
     for epoch in range(num_train_epochs):
         epoch_loss = 0
         for data in trainloader:
@@ -113,12 +164,11 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
             inputs, labels = data
             inputs = inputs.to(device)
             labels = labels.to(device)
-            # inputs = inputs.reshape((inputs.shape[0], 1, inputs.shape[1]))
 
             optimizer.zero_grad()
 
-            preds = model(inputs)
-            loss = loss_func(preds, labels)
+            logits = model(inputs)
+            loss = loss_func(logits, labels)
             loss.backward()
             optimizer.step()
 
@@ -128,12 +178,14 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
             for data in validationloader:
                 model.eval()
                 inputs, labels = data
-                inputs = inputs.reshape((inputs.shape[0], 1, inputs.shape[1]))
-                preds = model(inputs)
-                val_loss = loss_func(preds, labels).detach()
+                inputs = inputs.to(device)
+                labels = labels.to(device)
+                logits = model(inputs)
+                val_loss = loss_func(logits, labels).detach()
 
-                accuracy = sklearn.metrics.accuracy_score(labels.numpy(), torch.argmax(preds, dim=1).numpy())
-                auc = sklearn.metrics.roc_auc_score(labels.numpy(), preds[:, 1])
+                probs = torch.softmax(logits, dim=1)
+                accuracy = sklearn.metrics.accuracy_score(labels.numpy(), torch.argmax(probs, dim=1).numpy())
+                auc = sklearn.metrics.roc_auc_score(labels.numpy(), probs[:,1].numpy())
 
                 history['loss'].append(epoch_loss / (y_train.shape[0] / batch_size))
                 history['val_loss'].append(val_loss)
@@ -141,17 +193,21 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
                 history['auc'].append(auc)
 
                 if val_loss < best_val_loss:
+                    improved = True
                     best_val_loss = val_loss
                     best_accuracy = accuracy
                     best_auc = auc
                     torch.save(model.state_dict(), "cnn.pt")
+                else:
+                    improved = False
 
                 # Early stopping
-                if len(history['val_loss']) >= 30:
-                    last30 = history['val_loss'][-30:]
-                    if best_val_loss not in last30:
-                        print(f"Best loss {best_val_loss} with accuracy {best_accuracy} and auc {best_auc}")
-                        return history
+                patience += 1
+                if improved:
+                    patience = 0
+                elif patience >= 30:
+                    print(f"Best loss {best_val_loss} with accuracy {best_accuracy} and auc {best_auc}")
+                    return history
 
         if epoch == 0:
             print(f"Epoch [1/{num_train_epochs}], Train Loss: {history['loss'][epoch]:.4f}, Val Loss: {history['val_loss'][epoch]:.4f}, Acc Score: {history['accuracy'][epoch]:.4f}, AUC: {history['auc'][epoch]:.4f}")
@@ -224,11 +280,17 @@ def visualize(history):
 
 
 def predict(x_test):
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+    print(f"Using device: {device}")
+
     state_dict = torch.load("cnn.pt")
     model = CNN()
     model.load_state_dict(state_dict)
     model.eval()
-    y_probs = model(torch.tensor(x_test.reshape((x_test.shape[0], 1, x_test.shape[1])).astype(np.float32)))[:, 1]
+    y_probs = model(torch.tensor(x_test).permute(0, 3, 1, 2).astype(np.float32))[:, 1]
     np.savetxt('yproba_cnn.txt', y_probs.detach().numpy())
 
 
@@ -236,10 +298,15 @@ def main():
     x_dev, y_dev, x_test = load_data()
     x_train, x_val, y_train, y_val = sklearn.model_selection.train_test_split(x_dev, y_dev, test_size=0.20, random_state=RANDOM_SEED)
     model = CNN()
-    history = train(x_train, y_train, x_val, y_val, model, num_train_epochs=80,
-                           batch_size=64,
-                           lr=1e-4,
-                           weight_decay=1e-3)
+    history = train(x_train,
+                    y_train,
+                    x_val,
+                    y_val,
+                    model,
+                    num_train_epochs=80,
+                    batch_size=64,
+                    lr=1e-4,
+                    weight_decay=1e-3)
     visualize(history)
     predict(x_test)
     
