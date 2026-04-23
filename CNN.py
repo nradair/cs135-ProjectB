@@ -11,6 +11,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 import torch.nn.functional as F
 import torchvision.transforms as T
+import torchvision.models as models
 
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -38,10 +39,14 @@ class MyDataset(Dataset):
         ])
 
         # Augmentation for negative class (label == 0)
-        self.neg_transform = T.Compose([
-            T.Lambda(lambda img: img.permute(2, 0, 1)),
-            T.RandomRotation(degrees=90),
-        ])
+        self.neg_transform = T.RandomApply(nn.ModuleList([
+            # T.RandomRotation(degrees=90),
+            T.RandomPerspective(distortion_scale=0.2, p=1),
+            T.RandomVerticalFlip(p=1),
+            T.RandomHorizontalFlip(p=1),
+            T.ColorJitter(brightness=0.5)
+            # T.GaussianBlur(3)
+        ]), p=0.25)
 
     def __len__(self):
         return len(self.x)
@@ -50,72 +55,56 @@ class MyDataset(Dataset):
         img = self.x[idx]
         label = self.y[idx]
 
+        img = self.base_transform(img)
+
         if self.augment_negatives and label == 0:
             img = self.neg_transform(img)
-        else:
-            img = self.base_transform(img)
 
         return img, label
     
 
-def create_balanced_sampler(labels):
-    labels = torch.tensor(labels)
-
-    class_counts = torch.bincount(labels)
-    class_weights = 1.0 / class_counts.float()
-
-    sample_weights = class_weights[labels]
-
-    sampler = WeightedRandomSampler(
-        weights=sample_weights,
-        num_samples=len(labels),
-        replacement=True
-    )
-
-    return sampler
-
-
 class CNN(nn.Module):
-    def __init__(self):
+    def __init__(self, pretrained=False):
         super().__init__()
-        self.seq = nn.Sequential(
-            nn.LazyConv2d(16, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(32, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(64, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(128, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(256, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(512, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(1024, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.LazyConv2d(2048, 3, padding='same'),
-            nn.LazyBatchNorm2d(),
-            nn.ReLU(),
-            # nn.MaxPool2d(kernel_size=2, stride=2),
-            # nn.LazyConv2d(4096, 3, padding='same'),
-            # nn.LazyBatchNorm2d(),
-            # nn.ReLU(),
-            nn.AdaptiveAvgPool2d(1),
+        if pretrained:
+            self.backbone = models.mobilenet_v3_small(weights='DEFAULT')
+        else:
+            self.backbone = nn.Sequential(
+                nn.LazyConv2d(16, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(32, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(64, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(128, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(256, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(512, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(1024, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.LazyConv2d(2048, 3, padding='same'),
+                nn.LazyBatchNorm2d(),
+                nn.ReLU(),
+                nn.AdaptiveAvgPool2d(1)
+            )
 
+        self.head = nn.Sequential(
             nn.Flatten(),
             nn.LazyLinear(512),
             nn.ReLU(),
@@ -124,11 +113,35 @@ class CNN(nn.Module):
         )
 
     def forward(self, x):
-        logits = self.seq(x)
+        feats = self.backbone(x)
+        logits = self.head(feats)
         return logits
 
 
-def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, lr, weight_decay):
+def create_balanced_sampler(labels, age_groups):
+    labels = torch.tensor(labels)
+
+    age_group_codes = torch.tensor(pd.Categorical(age_groups).codes)
+    n_age_groups = len(torch.unique(age_group_codes))
+    joint_groups = labels * n_age_groups + age_group_codes
+    group_counts = torch.bincount(joint_groups)
+
+    group_weights = 1.0 / group_counts.float()
+    group_weights[group_counts == 0] = 0
+    group_weights = torch.clamp(group_weights, max=10.0)
+
+    sample_weights = group_weights[joint_groups]
+
+    sampler = WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(sample_weights),
+        replacement=True
+    )
+
+    return sampler
+
+
+def train(x_train, y_train, x_val, y_val, age_groups, model, num_train_epochs, batch_size, lr, weight_decay):
     """
     args:
       x_train: `np.array((N, D))`, training data of N instances and D features.
@@ -149,9 +162,9 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
 
     model = model.to(device)
 
-    sampler = create_balanced_sampler(y_train)
+    sampler = create_balanced_sampler(y_train, age_groups)
 
-    trainloader = DataLoader(MyDataset(x_train, y_train, augment_negatives=True),
+    trainloader = DataLoader(MyDataset(x_train, y_train, augment_negatives=False),
                              batch_size=batch_size,
                              shuffle=False,
                              sampler=sampler)
@@ -170,9 +183,6 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
 
     best_val_loss = float('inf')
     best_auc = 0
-
-    # patience variables
-    improved = False
     patience = 0
 
     for epoch in range(num_train_epochs):
@@ -204,7 +214,7 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
                 probs = torch.softmax(logits, dim=1)
                 auc = sklearn.metrics.roc_auc_score(labels.cpu().numpy(), probs[:,1].cpu().numpy())
 
-                history['loss'].append(epoch_loss / (y_train.shape[0] / batch_size))
+                history['loss'].append(epoch_loss / len(trainloader))
                 history['val_loss'].append(val_loss.cpu())
                 history['auc'].append(auc)
 
@@ -213,14 +223,12 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
                     best_val_loss = val_loss
                     best_auc = auc
                     torch.save(model.state_dict(), "cnn.pt")
+                    patience = 0
                 else:
-                    improved = False
+                    patience += 1
 
                 # Early stopping
-                patience += 1
-                if improved:
-                    patience = 0
-                elif patience >= 30:
+                if patience >= 30:
                     print(f"Best loss {best_val_loss} with auc {best_auc}")
                     return history
 
@@ -255,9 +263,15 @@ def compute_normalization_stats(x):
 
 
 def load_data():
-    # x_dev_df = pd.read_csv('x_train.csv')
+    x_dev_df = pd.read_csv('x_train.csv')
     y_dev_df = pd.read_csv('y_train.csv')
     # x_test_df = pd.read_csv('x_test.csv')
+
+    age_groups = pd.cut(
+                    x_dev_df['age'],
+                    bins=[0, 30, 60, 100],
+                    labels=['Young (<30)', 'Adult (30-60)', 'Senior (60+)']
+                )
 
     x_dev, dev_ids = load_img_data('x_train_img.npz')
     x_test, test_ids = load_img_data('x_test_img.npz')
@@ -274,7 +288,7 @@ def load_data():
 
     y_labels = y_dev_df['coarse_label']
 
-    return x_dev, y_labels, x_test
+    return x_dev, y_labels, x_test, age_groups
 
 
 def visualize(history):
@@ -296,7 +310,7 @@ def visualize(history):
     # plt.show()
 
 
-def predict(x_test):
+def predict(x_test, model):
     if torch.cuda.is_available():
         device = torch.device("cuda")
     else:
@@ -304,33 +318,40 @@ def predict(x_test):
     print(f"Using device: {device}")
 
     state_dict = torch.load("cnn.pt")
-    model = CNN()
     model.load_state_dict(state_dict)
     model.eval()
     model = model.to(device)
-    inputs = torch.tensor(x_test).to(device)
-    logits = model(torch.tensor(inputs, dtype=torch.float32).permute(0, 3, 1, 2))
+    inputs = torch.tensor(x_test, dtype=torch.float32).to(device)
+    logits = model(inputs.permute(0, 3, 1, 2))
     probs = torch.softmax(logits, dim=1)[:, 1]
     np.savetxt('yproba_cnn.txt', probs.detach().cpu().numpy())
 
 
 def main():
-    x_dev, y_dev, x_test = load_data()
-    x_train, x_val, y_train, y_val = sklearn.model_selection.train_test_split(x_dev, y_dev, test_size=0.20, random_state=RANDOM_SEED)
+    x_dev, y_dev, x_test, age_groups = load_data()
+    x_train, x_val, y_train, y_val, age_train, age_val = sklearn.model_selection.train_test_split(
+        x_dev,
+        y_dev,
+        age_groups,
+        test_size=0.20,
+        stratify=y_dev,
+        random_state=RANDOM_SEED
+    )
     y_train = y_train.to_numpy()
     y_val = y_val.to_numpy()
-    model = CNN()
+    model = CNN(pretrained=False)
     history = train(x_train,
                     y_train,
                     x_val,
                     y_val,
+                    age_train,
                     model,
                     num_train_epochs=500,
                     batch_size=64,
                     lr=1e-4,
                     weight_decay=1e-3)
     visualize(history)
-    predict(x_test)
+    predict(x_test, model)
     
 
 if __name__ == "__main__":
