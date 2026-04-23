@@ -94,12 +94,32 @@ class CNN(nn.Module):
             nn.LazyConv2d(128, 3, padding='same'),
             nn.LazyBatchNorm2d(),
             nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.LazyConv2d(256, 3, padding='same'),
+            nn.LazyBatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.LazyConv2d(512, 3, padding='same'),
+            nn.LazyBatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.LazyConv2d(1024, 3, padding='same'),
+            nn.LazyBatchNorm2d(),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.LazyConv2d(2048, 3, padding='same'),
+            nn.LazyBatchNorm2d(),
+            nn.ReLU(),
+            # nn.MaxPool2d(kernel_size=2, stride=2),
+            # nn.LazyConv2d(4096, 3, padding='same'),
+            # nn.LazyBatchNorm2d(),
+            # nn.ReLU(),
             nn.AdaptiveAvgPool2d(1),
 
             nn.Flatten(),
-            nn.LazyLinear(64),
+            nn.LazyLinear(512),
             nn.ReLU(),
-            nn.Dropout(0.2),
+            nn.Dropout(0.5),
             nn.LazyLinear(2)
         )
 
@@ -146,11 +166,9 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
 
     history = {"loss": [],
               "val_loss": [],
-              "accuracy": [],
               "auc": []}
 
     best_val_loss = float('inf')
-    best_accuracy = 0
     best_auc = 0
 
     # patience variables
@@ -184,18 +202,15 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
                 val_loss = loss_func(logits, labels).detach()
 
                 probs = torch.softmax(logits, dim=1)
-                accuracy = sklearn.metrics.accuracy_score(labels.numpy(), torch.argmax(probs, dim=1).numpy())
-                auc = sklearn.metrics.roc_auc_score(labels.numpy(), probs[:,1].numpy())
+                auc = sklearn.metrics.roc_auc_score(labels.cpu().numpy(), probs[:,1].cpu().numpy())
 
                 history['loss'].append(epoch_loss / (y_train.shape[0] / batch_size))
-                history['val_loss'].append(val_loss)
-                history['accuracy'].append(accuracy)
+                history['val_loss'].append(val_loss.cpu())
                 history['auc'].append(auc)
 
                 if val_loss < best_val_loss:
                     improved = True
                     best_val_loss = val_loss
-                    best_accuracy = accuracy
                     best_auc = auc
                     torch.save(model.state_dict(), "cnn.pt")
                 else:
@@ -206,13 +221,13 @@ def train(x_train, y_train, x_val, y_val, model, num_train_epochs, batch_size, l
                 if improved:
                     patience = 0
                 elif patience >= 30:
-                    print(f"Best loss {best_val_loss} with accuracy {best_accuracy} and auc {best_auc}")
+                    print(f"Best loss {best_val_loss} with auc {best_auc}")
                     return history
 
         if epoch == 0:
-            print(f"Epoch [1/{num_train_epochs}], Train Loss: {history['loss'][epoch]:.4f}, Val Loss: {history['val_loss'][epoch]:.4f}, Acc Score: {history['accuracy'][epoch]:.4f}, AUC: {history['auc'][epoch]:.4f}")
+            print(f"Epoch [1/{num_train_epochs}], Train Loss: {history['loss'][epoch]:.4f}, Val Loss: {history['val_loss'][epoch]:.4f}, AUC: {history['auc'][epoch]:.4f}")
         if (epoch + 1) % 10 == 0:
-            print(f"Epoch [{epoch + 1}/{num_train_epochs}], Train Loss: {history['loss'][epoch]:.4f}, Val Loss: {history['val_loss'][epoch]:.4f}, Acc Score: {history['accuracy'][epoch]:.4f}, AUC: {history['auc'][epoch]:.4f}")
+            print(f"Epoch [{epoch + 1}/{num_train_epochs}], Train Loss: {history['loss'][epoch]:.4f}, Val Loss: {history['val_loss'][epoch]:.4f}, AUC: {history['auc'][epoch]:.4f}")
 
     return history
 
@@ -271,12 +286,14 @@ def visualize(history):
     plt.ylabel('Loss')
 
     plt.subplot(2, 1, 2)
-    plt.plot(history['accuracy'], label='val accuracy')
+    plt.plot(history['auc'], label='val AUC')
     plt.ylim(0.0, 1.0)
     plt.xlabel('Epoch')
-    plt.ylabel('Clasification accuracy')
+    plt.ylabel('ROC AUC')
     plt.legend()
-    plt.show()
+
+    plt.savefig('cnn.png')
+    # plt.show()
 
 
 def predict(x_test):
@@ -291,9 +308,10 @@ def predict(x_test):
     model.load_state_dict(state_dict)
     model.eval()
     model = model.to(device)
-    inputs = x_test.to(device)
-    y_probs = model(torch.tensor(inputs, dtype=torch.float32).permute(0, 3, 1, 2))[:, 1]
-    np.savetxt('yproba_cnn.txt', y_probs.detach().numpy())
+    inputs = torch.tensor(x_test).to(device)
+    logits = model(torch.tensor(inputs, dtype=torch.float32).permute(0, 3, 1, 2))
+    probs = torch.softmax(logits, dim=1)[:, 1]
+    np.savetxt('yproba_cnn.txt', probs.detach().cpu().numpy())
 
 
 def main():
@@ -307,7 +325,7 @@ def main():
                     x_val,
                     y_val,
                     model,
-                    num_train_epochs=80,
+                    num_train_epochs=500,
                     batch_size=64,
                     lr=1e-4,
                     weight_decay=1e-3)
