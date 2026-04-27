@@ -352,6 +352,7 @@ def visualize(history):
 
     plt.savefig('cnn.png')
     # plt.show()
+    plt.close()
 
 
 def predict(x_test, mean, std, model, batch_size=64):
@@ -392,6 +393,68 @@ def predict(x_test, mean, std, model, batch_size=64):
     np.savetxt('yproba_cnn.txt', all_probs)
 
 
+def most_confident(x_val, y_val, mean, std, model, batch_size=64):
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+    print(f"Using device: {device}")
+
+    state_dict = torch.load("cnn.pt", map_location=device)
+    model.load_state_dict(state_dict)
+    model = model.to(device)
+    model.eval()
+
+    validationloader = DataLoader(MyDataset(x_val, y_val, mean, std, augment=False),
+                                  batch_size=batch_size,
+                                  shuffle=False,
+                                  num_workers=4,
+                                  pin_memory=True)
+    
+    all_probs = []
+    all_labels = []
+
+    with torch.no_grad():
+        for inputs, labels in validationloader:
+            inputs = inputs.to(device)
+            logits = model(inputs)
+            probs = torch.softmax(logits, dim=1)[:, 1]
+
+            all_probs.append(probs.cpu())
+            all_labels += labels.tolist()
+
+    all_probs = torch.cat(all_probs).numpy()
+    all_labels = np.array(all_labels)
+
+    preds = (all_probs >= 0.5).astype(int)
+    confidence = np.abs(all_probs - 0.5)
+
+    correct_mask = preds == all_labels
+    incorrect_mask = preds != all_labels
+
+    correct_indices = np.where(correct_mask)[0]
+    incorrect_indices = np.where(incorrect_mask)[0]
+
+    top_correct = correct_indices[np.argsort(-confidence[correct_indices])[:3]]
+    top_incorrect = incorrect_indices[np.argsort(-confidence[incorrect_indices])[:3]]
+
+    for i, idx in enumerate(top_correct):
+        img = x_val[idx]
+        plt.imshow(img)
+        plt.title(f"Correct | True: {all_labels[idx]} Pred: {preds[idx]} Prob: {all_probs[idx]:.3f}")
+        plt.axis('off')
+        plt.savefig(f"most_confident_correct_{i}.png")
+        plt.close()
+
+    for i, idx in enumerate(top_incorrect):
+        img = x_val[idx]
+        plt.imshow(img)
+        plt.title(f"Incorrect | True: {all_labels[idx]} Pred: {preds[idx]} Prob: {all_probs[idx]:.3f}")
+        plt.axis('off')
+        plt.savefig(f"most_confident_incorrect_{i}.png")
+        plt.close()
+
+
 def main():
     pretrained = True
     batch_size = 64
@@ -422,6 +485,7 @@ def main():
                     patience_limit=5)
     visualize(history)
     predict(x_test, mean, std, model, batch_size=batch_size)
+    most_confident(x_val, y_val, mean, std, model, batch_size=64)
     
 
 if __name__ == "__main__":
