@@ -1,0 +1,363 @@
+############################################################################################################
+mobilenet    :    Head Only
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6784, Val Loss: 0.5668, AUC: 0.7543, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6170, Val Loss: 0.4865, AUC: 0.8262, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5812, Val Loss: 0.4650, AUC: 0.8323, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5268, Val Loss: 0.4295, AUC: 0.8453, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.5126, Val Loss: 0.3448, AUC: 0.8568, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.4765, Val Loss: 0.4167, AUC: 0.8570, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.4426, Val Loss: 0.3530, AUC: 0.8721, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.4346, Val Loss: 0.3592, AUC: 0.8761, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.4205, Val Loss: 0.3609, AUC: 0.8787, Learning Rate: 1.0000000000000002e-06
+Best loss 0.3447815715256384 with auc 0.8567787971457697
+
+
+
+############################################################################################################
+mobilenet    :    Full
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6631, Val Loss: 0.5238, AUC: 0.8198, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.5513, Val Loss: 0.3639, AUC: 0.8596, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.4205, Val Loss: 0.2808, AUC: 0.8728, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.2734, Val Loss: 0.2295, AUC: 0.8818, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.2091, Val Loss: 0.2200, AUC: 0.8993, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.1533, Val Loss: 0.3063, AUC: 0.9014, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.1096, Val Loss: 0.2550, AUC: 0.9049, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.1009, Val Loss: 0.2465, AUC: 0.9095, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.0962, Val Loss: 0.2360, AUC: 0.9159, Learning Rate: 1.0000000000000002e-06
+Best loss 0.2200449508125499 with auc 0.8993374108053007
+
+
+
+############################################################################################################
+mobilenet    :    Full @ Epoch 6
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6784, Val Loss: 0.5668, AUC: 0.7543, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6170, Val Loss: 0.4865, AUC: 0.8262, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5812, Val Loss: 0.4650, AUC: 0.8323, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5268, Val Loss: 0.4295, AUC: 0.8453, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.5126, Val Loss: 0.3448, AUC: 0.8568, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.4765, Val Loss: 0.4167, AUC: 0.8570, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.3968, Val Loss: 0.2905, AUC: 0.8764, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.2940, Val Loss: 0.2953, AUC: 0.8932, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.2247, Val Loss: 0.3094, AUC: 0.8930, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.1785, Val Loss: 0.3144, AUC: 0.8940, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.1638, Val Loss: 0.3126, AUC: 0.8983, Learning Rate: 1.0000000000000002e-06
+Best loss 0.29054271669711096 with auc 0.876401630988787
+
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+
+
+############################################################################################################
+densenet    :    Head Only
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6603, Val Loss: 0.6038, AUC: 0.7910, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.5797, Val Loss: 0.5567, AUC: 0.8229, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5308, Val Loss: 0.4645, AUC: 0.8364, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.4807, Val Loss: 0.4913, AUC: 0.8512, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4539, Val Loss: 0.4929, AUC: 0.8581, Learning Rate: 1e-05
+Epoch [6/500], Train Loss: 0.4222, Val Loss: 0.4654, AUC: 0.8611, Learning Rate: 1e-05
+Epoch [7/500], Train Loss: 0.4150, Val Loss: 0.4229, AUC: 0.8568, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.4158, Val Loss: 0.4404, AUC: 0.8621, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.3904, Val Loss: 0.4314, AUC: 0.8596, Learning Rate: 1.0000000000000002e-06
+Epoch [10/500], Train Loss: 0.4082, Val Loss: 0.4288, AUC: 0.8665, Learning Rate: 1.0000000000000002e-06
+Epoch [11/500], Train Loss: 0.3994, Val Loss: 0.4167, AUC: 0.8634, Learning Rate: 1.0000000000000002e-06
+Epoch [12/500], Train Loss: 0.4124, Val Loss: 0.4113, AUC: 0.8637, Learning Rate: 1.0000000000000002e-06
+Epoch [13/500], Train Loss: 0.4096, Val Loss: 0.4046, AUC: 0.8619, Learning Rate: 1.0000000000000002e-06
+Epoch [14/500], Train Loss: 0.3931, Val Loss: 0.4233, AUC: 0.8631, Learning Rate: 1.0000000000000002e-06
+Epoch [15/500], Train Loss: 0.3957, Val Loss: 0.4200, AUC: 0.8624, Learning Rate: 1.0000000000000002e-07
+Epoch [16/500], Train Loss: 0.4056, Val Loss: 0.4412, AUC: 0.8616, Learning Rate: 1.0000000000000002e-07
+Epoch [17/500], Train Loss: 0.3951, Val Loss: 0.4191, AUC: 0.8634, Learning Rate: 1.0000000000000004e-08
+Best loss 0.4046153320094286 with auc 0.8618756371049949
+
+
+
+############################################################################################################
+densenet    :    Full
+############################################################################################################
+Epoch [1/500], Train Loss: 0.5535, Val Loss: 0.3992, AUC: 0.8565, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.2669, Val Loss: 0.4202, AUC: 0.8902, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.1173, Val Loss: 0.1976, AUC: 0.9014, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.0519, Val Loss: 0.3145, AUC: 0.9042, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.0404, Val Loss: 0.2085, AUC: 0.9062, Learning Rate: 1e-05
+Epoch [6/500], Train Loss: 0.0391, Val Loss: 0.2339, AUC: 0.9095, Learning Rate: 1e-05
+Epoch [7/500], Train Loss: 0.0297, Val Loss: 0.1912, AUC: 0.8955, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.0170, Val Loss: 0.1805, AUC: 0.8942, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.0189, Val Loss: 0.1934, AUC: 0.8925, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.0271, Val Loss: 0.1850, AUC: 0.8858, Learning Rate: 1.0000000000000002e-06
+Epoch [11/500], Train Loss: 0.0192, Val Loss: 0.1758, AUC: 0.8800, Learning Rate: 1.0000000000000002e-06
+Epoch [12/500], Train Loss: 0.0109, Val Loss: 0.1734, AUC: 0.8818, Learning Rate: 1.0000000000000002e-06
+Epoch [13/500], Train Loss: 0.0153, Val Loss: 0.1632, AUC: 0.8749, Learning Rate: 1.0000000000000002e-06
+Epoch [14/500], Train Loss: 0.0167, Val Loss: 0.1762, AUC: 0.8820, Learning Rate: 1.0000000000000002e-06
+Epoch [15/500], Train Loss: 0.0144, Val Loss: 0.1682, AUC: 0.8800, Learning Rate: 1.0000000000000002e-07
+Epoch [16/500], Train Loss: 0.0192, Val Loss: 0.1821, AUC: 0.8866, Learning Rate: 1.0000000000000002e-07
+Epoch [17/500], Train Loss: 0.0208, Val Loss: 0.1733, AUC: 0.8800, Learning Rate: 1.0000000000000004e-08
+Best loss 0.16317177513393305 with auc 0.8748725790010193
+
+
+
+############################################################################################################
+densenet    :    Full @ Epoch 10
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6603, Val Loss: 0.6038, AUC: 0.7910, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.5797, Val Loss: 0.5567, AUC: 0.8229, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5308, Val Loss: 0.4645, AUC: 0.8364, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.4807, Val Loss: 0.4913, AUC: 0.8512, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4539, Val Loss: 0.4929, AUC: 0.8581, Learning Rate: 1e-05
+Epoch [6/500], Train Loss: 0.4222, Val Loss: 0.4654, AUC: 0.8611, Learning Rate: 1e-05
+Epoch [7/500], Train Loss: 0.4150, Val Loss: 0.4229, AUC: 0.8568, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.4158, Val Loss: 0.4404, AUC: 0.8621, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.3904, Val Loss: 0.4314, AUC: 0.8596, Learning Rate: 1.0000000000000002e-06
+Epoch [10/500], Train Loss: 0.4082, Val Loss: 0.4288, AUC: 0.8665, Learning Rate: 1.0000000000000002e-06
+Epoch [11/500], Train Loss: 0.3961, Val Loss: 0.4152, AUC: 0.8642, Learning Rate: 1.0000000000000002e-06
+Epoch [12/500], Train Loss: 0.4007, Val Loss: 0.4101, AUC: 0.8642, Learning Rate: 1.0000000000000002e-06
+Epoch [13/500], Train Loss: 0.3916, Val Loss: 0.4014, AUC: 0.8634, Learning Rate: 1.0000000000000002e-06
+Epoch [14/500], Train Loss: 0.3696, Val Loss: 0.4215, AUC: 0.8654, Learning Rate: 1.0000000000000002e-06
+Epoch [15/500], Train Loss: 0.3664, Val Loss: 0.4164, AUC: 0.8662, Learning Rate: 1.0000000000000002e-07
+Epoch [16/500], Train Loss: 0.3715, Val Loss: 0.4404, AUC: 0.8662, Learning Rate: 1.0000000000000002e-07
+Epoch [17/500], Train Loss: 0.3611, Val Loss: 0.4164, AUC: 0.8649, Learning Rate: 1.0000000000000004e-08
+Best loss 0.40137835680428197 with auc 0.8634046890927625
+
+
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+
+
+############################################################################################################
+efficientnet    :    Head Only
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6592, Val Loss: 0.6018, AUC: 0.8695, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.5911, Val Loss: 0.5595, AUC: 0.8807, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5257, Val Loss: 0.5356, AUC: 0.8835, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.4475, Val Loss: 0.5018, AUC: 0.8749, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4010, Val Loss: 0.4507, AUC: 0.8756, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.3622, Val Loss: 0.4234, AUC: 0.8797, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.3136, Val Loss: 0.4353, AUC: 0.8767, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.3097, Val Loss: 0.4608, AUC: 0.8705, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.2727, Val Loss: 0.4332, AUC: 0.8731, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.2865, Val Loss: 0.4223, AUC: 0.8726, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.2948, Val Loss: 0.4024, AUC: 0.8751, Learning Rate: 1e-05
+Epoch [12/500], Train Loss: 0.2866, Val Loss: 0.4003, AUC: 0.8784, Learning Rate: 1e-05
+Epoch [13/500], Train Loss: 0.2504, Val Loss: 0.4079, AUC: 0.8710, Learning Rate: 1e-05
+Epoch [14/500], Train Loss: 0.2822, Val Loss: 0.4228, AUC: 0.8759, Learning Rate: 1.0000000000000002e-06
+Epoch [15/500], Train Loss: 0.2589, Val Loss: 0.4067, AUC: 0.8800, Learning Rate: 1.0000000000000002e-06
+Epoch [16/500], Train Loss: 0.2780, Val Loss: 0.3769, AUC: 0.8764, Learning Rate: 1.0000000000000002e-06
+Epoch [17/500], Train Loss: 0.2698, Val Loss: 0.3833, AUC: 0.8726, Learning Rate: 1.0000000000000002e-06
+Epoch [18/500], Train Loss: 0.2741, Val Loss: 0.3982, AUC: 0.8751, Learning Rate: 1.0000000000000002e-07
+Epoch [19/500], Train Loss: 0.2893, Val Loss: 0.3881, AUC: 0.8751, Learning Rate: 1.0000000000000002e-07
+Epoch [20/500], Train Loss: 0.2759, Val Loss: 0.4022, AUC: 0.8792, Learning Rate: 1.0000000000000004e-08
+Best loss 0.37691232511552714 with auc 0.876401630988787
+
+
+
+############################################################################################################
+efficientnet    :    Full
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6161, Val Loss: 0.5347, AUC: 0.8945, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.3775, Val Loss: 0.2935, AUC: 0.9116, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.1643, Val Loss: 0.2723, AUC: 0.9083, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.0794, Val Loss: 0.2522, AUC: 0.8912, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.0451, Val Loss: 0.2523, AUC: 0.8871, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.0473, Val Loss: 0.2290, AUC: 0.9062, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.0294, Val Loss: 0.2021, AUC: 0.9067, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.0257, Val Loss: 0.1977, AUC: 0.9055, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.0120, Val Loss: 0.1972, AUC: 0.8986, Learning Rate: 0.0001
+Epoch [10/500], Train Loss: 0.0089, Val Loss: 0.2126, AUC: 0.8923, Learning Rate: 0.0001
+Epoch [11/500], Train Loss: 0.0150, Val Loss: 0.2115, AUC: 0.8909, Learning Rate: 1e-05
+Epoch [12/500], Train Loss: 0.0150, Val Loss: 0.2120, AUC: 0.9001, Learning Rate: 1e-05
+Epoch [13/500], Train Loss: 0.0031, Val Loss: 0.2140, AUC: 0.8951, Learning Rate: 1.0000000000000002e-06
+Best loss 0.19720637242672806 with auc 0.898572884811417
+
+
+
+############################################################################################################
+efficientnet    :    Full @ Epoch 10
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6592, Val Loss: 0.6018, AUC: 0.8695, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.5911, Val Loss: 0.5595, AUC: 0.8807, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5257, Val Loss: 0.5356, AUC: 0.8835, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.4475, Val Loss: 0.5018, AUC: 0.8749, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4010, Val Loss: 0.4507, AUC: 0.8756, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.3622, Val Loss: 0.4234, AUC: 0.8797, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.3136, Val Loss: 0.4353, AUC: 0.8767, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.3097, Val Loss: 0.4608, AUC: 0.8705, Learning Rate: 1e-05
+Epoch [9/500], Train Loss: 0.2727, Val Loss: 0.4332, AUC: 0.8731, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.2865, Val Loss: 0.4223, AUC: 0.8726, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.2841, Val Loss: 0.3928, AUC: 0.8792, Learning Rate: 1e-05
+Epoch [12/500], Train Loss: 0.2527, Val Loss: 0.3724, AUC: 0.8848, Learning Rate: 1e-05
+Epoch [13/500], Train Loss: 0.1980, Val Loss: 0.3599, AUC: 0.8835, Learning Rate: 1e-05
+Epoch [14/500], Train Loss: 0.2102, Val Loss: 0.3614, AUC: 0.8894, Learning Rate: 1e-05
+Epoch [15/500], Train Loss: 0.1752, Val Loss: 0.3307, AUC: 0.8973, Learning Rate: 1e-05
+Epoch [16/500], Train Loss: 0.1752, Val Loss: 0.2882, AUC: 0.8986, Learning Rate: 1e-05
+Epoch [17/500], Train Loss: 0.1548, Val Loss: 0.2927, AUC: 0.8958, Learning Rate: 1e-05
+Epoch [18/500], Train Loss: 0.1457, Val Loss: 0.2936, AUC: 0.9001, Learning Rate: 1.0000000000000002e-06
+Epoch [19/500], Train Loss: 0.1493, Val Loss: 0.2775, AUC: 0.9009, Learning Rate: 1.0000000000000002e-06
+Epoch [20/500], Train Loss: 0.1382, Val Loss: 0.2964, AUC: 0.9049, Learning Rate: 1.0000000000000002e-06
+Epoch [21/500], Train Loss: 0.1177, Val Loss: 0.2855, AUC: 0.9039, Learning Rate: 1.0000000000000002e-07
+Epoch [22/500], Train Loss: 0.1359, Val Loss: 0.2727, AUC: 0.9055, Learning Rate: 1.0000000000000002e-07
+Epoch [23/500], Train Loss: 0.1304, Val Loss: 0.2750, AUC: 0.8988, Learning Rate: 1.0000000000000002e-07
+Epoch [24/500], Train Loss: 0.1229, Val Loss: 0.2810, AUC: 0.9009, Learning Rate: 1.0000000000000004e-08
+Epoch [25/500], Train Loss: 0.1117, Val Loss: 0.2901, AUC: 0.9019, Learning Rate: 1.0000000000000004e-08
+Epoch [26/500], Train Loss: 0.1243, Val Loss: 0.2797, AUC: 0.9029, Learning Rate: 1.0000000000000004e-08
+Best loss 0.2726879637625258 with auc 0.9054536187563711
+
+
+
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+
+
+############################################################################################################
+googlenet    :    Head Only
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6681, Val Loss: 0.7051, AUC: 0.7421, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6118, Val Loss: 0.5770, AUC: 0.7719, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5715, Val Loss: 0.5681, AUC: 0.7954, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5295, Val Loss: 0.5605, AUC: 0.8048, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4833, Val Loss: 0.5709, AUC: 0.8089, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.4468, Val Loss: 0.5010, AUC: 0.8173, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.4120, Val Loss: 0.4327, AUC: 0.8129, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.4038, Val Loss: 0.4359, AUC: 0.8206, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.3686, Val Loss: 0.4374, AUC: 0.8249, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.3733, Val Loss: 0.4464, AUC: 0.8157, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.3664, Val Loss: 0.4530, AUC: 0.8326, Learning Rate: 1.0000000000000002e-06
+Best loss 0.4327062040062274 with auc 0.8129459734964323
+
+
+
+############################################################################################################
+googlenet    :    Full
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6220, Val Loss: 0.5888, AUC: 0.8537, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.4027, Val Loss: 0.3307, AUC: 0.9016, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.2073, Val Loss: 0.3004, AUC: 0.8960, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.0855, Val Loss: 0.2786, AUC: 0.9047, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.0859, Val Loss: 0.3379, AUC: 0.9014, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.0528, Val Loss: 0.3303, AUC: 0.8891, Learning Rate: 1e-05
+Epoch [7/500], Train Loss: 0.0612, Val Loss: 0.3076, AUC: 0.8840, Learning Rate: 1e-05
+Epoch [8/500], Train Loss: 0.0494, Val Loss: 0.2933, AUC: 0.8853, Learning Rate: 1.0000000000000002e-06
+Epoch [9/500], Train Loss: 0.0250, Val Loss: 0.2673, AUC: 0.8871, Learning Rate: 1.0000000000000002e-06
+Epoch [10/500], Train Loss: 0.0416, Val Loss: 0.2765, AUC: 0.8858, Learning Rate: 1.0000000000000002e-06
+Epoch [11/500], Train Loss: 0.0408, Val Loss: 0.2681, AUC: 0.8851, Learning Rate: 1.0000000000000002e-07
+Epoch [12/500], Train Loss: 0.0399, Val Loss: 0.2664, AUC: 0.8856, Learning Rate: 1.0000000000000002e-07
+Epoch [13/500], Train Loss: 0.0325, Val Loss: 0.2830, AUC: 0.8848, Learning Rate: 1.0000000000000002e-07
+Epoch [14/500], Train Loss: 0.0433, Val Loss: 0.2732, AUC: 0.8828, Learning Rate: 1.0000000000000004e-08
+Epoch [15/500], Train Loss: 0.0303, Val Loss: 0.2457, AUC: 0.8863, Learning Rate: 1.0000000000000004e-08
+Epoch [16/500], Train Loss: 0.0351, Val Loss: 0.2534, AUC: 0.8838, Learning Rate: 1.0000000000000004e-08
+Epoch [17/500], Train Loss: 0.0340, Val Loss: 0.2628, AUC: 0.8835, Learning Rate: 1.0000000000000004e-08
+Epoch [18/500], Train Loss: 0.0331, Val Loss: 0.2384, AUC: 0.8861, Learning Rate: 1.0000000000000004e-08
+Epoch [19/500], Train Loss: 0.0312, Val Loss: 0.2356, AUC: 0.8866, Learning Rate: 1.0000000000000004e-08
+Epoch [20/500], Train Loss: 0.0331, Val Loss: 0.2525, AUC: 0.8858, Learning Rate: 1.0000000000000004e-08
+Epoch [21/500], Train Loss: 0.0260, Val Loss: 0.2758, AUC: 0.8830, Learning Rate: 1.0000000000000004e-08
+Epoch [22/500], Train Loss: 0.0340, Val Loss: 0.2635, AUC: 0.8830, Learning Rate: 1.0000000000000004e-08
+Epoch [23/500], Train Loss: 0.0426, Val Loss: 0.2902, AUC: 0.8840, Learning Rate: 1.0000000000000004e-08
+Best loss 0.23557576953859652 with auc 0.8865953109072375
+
+
+
+############################################################################################################
+googlenet    :    Full @ Epoch 8
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6847, Val Loss: 0.6472, AUC: 0.7740, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6361, Val Loss: 0.6004, AUC: 0.8463, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.6057, Val Loss: 0.4994, AUC: 0.8662, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5668, Val Loss: 0.6181, AUC: 0.8530, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.5486, Val Loss: 0.4650, AUC: 0.8606, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.5279, Val Loss: 0.4866, AUC: 0.8665, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.4972, Val Loss: 0.4287, AUC: 0.8675, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.4818, Val Loss: 0.3753, AUC: 0.8746, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.3311, Val Loss: 0.2994, AUC: 0.8988, Learning Rate: 0.0001
+Epoch [10/500], Train Loss: 0.1773, Val Loss: 0.2098, AUC: 0.9090, Learning Rate: 0.0001
+Epoch [11/500], Train Loss: 0.1319, Val Loss: 0.2122, AUC: 0.9141, Learning Rate: 0.0001
+Epoch [12/500], Train Loss: 0.0741, Val Loss: 0.2029, AUC: 0.9210, Learning Rate: 0.0001
+Epoch [13/500], Train Loss: 0.0383, Val Loss: 0.1914, AUC: 0.9146, Learning Rate: 0.0001
+Epoch [14/500], Train Loss: 0.0339, Val Loss: 0.2894, AUC: 0.9113, Learning Rate: 0.0001
+Epoch [15/500], Train Loss: 0.0398, Val Loss: 0.2879, AUC: 0.9019, Learning Rate: 1e-05
+Epoch [16/500], Train Loss: 0.0220, Val Loss: 0.2663, AUC: 0.8942, Learning Rate: 1e-05
+Epoch [17/500], Train Loss: 0.0220, Val Loss: 0.2493, AUC: 0.8942, Learning Rate: 1.0000000000000002e-06
+Best loss 0.1914010977340957 with auc 0.9146279306829765
+
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+
+
+############################################################################################################
+regnet_x_1_6gf    :    Head Only
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6681, Val Loss: 0.7051, AUC: 0.7421, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6118, Val Loss: 0.5770, AUC: 0.7719, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5715, Val Loss: 0.5681, AUC: 0.7954, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5295, Val Loss: 0.5605, AUC: 0.8048, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4833, Val Loss: 0.5709, AUC: 0.8089, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.4468, Val Loss: 0.5010, AUC: 0.8173, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.4120, Val Loss: 0.4327, AUC: 0.8129, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.4038, Val Loss: 0.4359, AUC: 0.8206, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.3686, Val Loss: 0.4374, AUC: 0.8249, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.3733, Val Loss: 0.4464, AUC: 0.8157, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.3664, Val Loss: 0.4530, AUC: 0.8326, Learning Rate: 1.0000000000000002e-06
+Best loss 0.4327062040062274 with auc 0.8129459734964323
+
+
+
+############################################################################################################
+regnet_x_1_6gf    :    Full
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6116, Val Loss: 0.6420, AUC: 0.8272, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.3845, Val Loss: 0.3470, AUC: 0.8598, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.1857, Val Loss: 0.3393, AUC: 0.8835, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.0853, Val Loss: 0.3219, AUC: 0.8611, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.0492, Val Loss: 0.2508, AUC: 0.8688, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.0304, Val Loss: 0.2559, AUC: 0.8665, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.0258, Val Loss: 0.2271, AUC: 0.8647, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.0270, Val Loss: 0.2333, AUC: 0.8660, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.0115, Val Loss: 0.2409, AUC: 0.8863, Learning Rate: 1e-05
+Epoch [10/500], Train Loss: 0.0196, Val Loss: 0.2431, AUC: 0.8876, Learning Rate: 1e-05
+Epoch [11/500], Train Loss: 0.0154, Val Loss: 0.2392, AUC: 0.8835, Learning Rate: 1.0000000000000002e-06
+Best loss 0.22714166040137662 with auc 0.8646788990825688
+
+
+
+############################################################################################################
+regnet_x_1_6gf    :    Full @ Epoch 8
+############################################################################################################
+Epoch [1/500], Train Loss: 0.6681, Val Loss: 0.7051, AUC: 0.7421, Learning Rate: 0.0001
+Epoch [2/500], Train Loss: 0.6118, Val Loss: 0.5770, AUC: 0.7719, Learning Rate: 0.0001
+Epoch [3/500], Train Loss: 0.5715, Val Loss: 0.5681, AUC: 0.7954, Learning Rate: 0.0001
+Epoch [4/500], Train Loss: 0.5295, Val Loss: 0.5605, AUC: 0.8048, Learning Rate: 0.0001
+Epoch [5/500], Train Loss: 0.4833, Val Loss: 0.5709, AUC: 0.8089, Learning Rate: 0.0001
+Epoch [6/500], Train Loss: 0.4468, Val Loss: 0.5010, AUC: 0.8173, Learning Rate: 0.0001
+Epoch [7/500], Train Loss: 0.4120, Val Loss: 0.4327, AUC: 0.8129, Learning Rate: 0.0001
+Epoch [8/500], Train Loss: 0.4038, Val Loss: 0.4359, AUC: 0.8206, Learning Rate: 0.0001
+Epoch [9/500], Train Loss: 0.2525, Val Loss: 0.2965, AUC: 0.8774, Learning Rate: 0.0001
+Epoch [10/500], Train Loss: 0.1279, Val Loss: 0.2780, AUC: 0.8639, Learning Rate: 0.0001
+Epoch [11/500], Train Loss: 0.0689, Val Loss: 0.3105, AUC: 0.8698, Learning Rate: 0.0001
+Epoch [12/500], Train Loss: 0.0379, Val Loss: 0.2820, AUC: 0.8568, Learning Rate: 1e-05
+Epoch [13/500], Train Loss: 0.0285, Val Loss: 0.2365, AUC: 0.8601, Learning Rate: 1e-05
+Epoch [14/500], Train Loss: 0.0362, Val Loss: 0.2147, AUC: 0.8642, Learning Rate: 1e-05
+Epoch [15/500], Train Loss: 0.0239, Val Loss: 0.2315, AUC: 0.8660, Learning Rate: 1e-05
+Epoch [16/500], Train Loss: 0.0263, Val Loss: 0.2293, AUC: 0.8606, Learning Rate: 1.0000000000000002e-06
+Epoch [17/500], Train Loss: 0.0191, Val Loss: 0.2367, AUC: 0.8611, Learning Rate: 1.0000000000000002e-06
+Epoch [18/500], Train Loss: 0.0350, Val Loss: 0.2241, AUC: 0.8606, Learning Rate: 1.0000000000000002e-07
+Best loss 0.2147250641453064 with auc 0.8641692150866463
